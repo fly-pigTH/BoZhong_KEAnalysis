@@ -29,7 +29,7 @@ BZRobot = rtb.DHRobot([
 
 # input()
 
-single_motion = np.linspace(0, 1, num=100)
+single_motion = np.linspace(0, 0.1, num=100)
 reverse_array = single_motion[::-1]
 motion_array = np.hstack((single_motion, reverse_array))
 motion_array = np.vstack((motion_array, 0*motion_array, motion_array, motion_array))
@@ -42,7 +42,7 @@ target_point = SE3(np.array([-0.5, 0.5, 0.5]))
 
 kres = BZRobot.fkine([0.222, 0.989, 0, 0])
 print(kres)
-BZRobot.plot([0.222, 0.989, 0, 0], dt=0.1)
+BZRobot.plot(motion_array, dt=0.01)
 # ikres = BZRobot.ikine_LM(target_point)
 # print(ikres)
 # print(ikres[0])
