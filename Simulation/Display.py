@@ -78,6 +78,7 @@ a = a.T
 for i in range(2):
     robot.plot(a, dt=0.1, vellipse=True, loop=False, limits=[-1, 6, -1, 6, 0, 6], jointaxes=True)   # 动画展示
 
+plt.close(fig=None)
 
 a = input()
 
@@ -100,6 +101,8 @@ for i in range(2):
 for i in range(2):
     Rotator.plot(motionArr.T, dt=0.1, vellipse=True, loop=False, limits=[-3, 3, -3, 3, 0, 3], eeframe=True, jointaxes=True)   # 动画展示
 
+plt.close(fig=None)
+
 a = input()
 
 Translator = rtb.DHRobot([
@@ -118,3 +121,5 @@ for i in range(2):
 
 for i in range(2):
     Translator.plot(motionArr.T, dt=0.1, vellipse=True, loop=False, limits=[-3, 3, -3, 3, 0, 3], eeframe=True, jointaxes=True)   # 动画展示
+
+plt.close(fig=None)
