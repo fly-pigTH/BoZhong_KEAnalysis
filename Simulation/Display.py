@@ -66,7 +66,6 @@ single_motion = np.hstack((single_motion, reverse_array))
 arm_motion = single_motion*0.3 + 1
 coeffList = [1] + [0.2] * 6 + [1] + [0.2] * 6 + [1] + [0.2] * 6 + [0] + [0.2] * 6
 
-
 a = arm_motion.copy()
 for i in range(27):
     if (i % 7) == 6:
@@ -76,11 +75,33 @@ for i in range(27):
 # print(single_motion_list)
 a = a.T
 for i in range(2):
-    robot.plot(a, dt=0.1, vellipse=True, loop=False, limits=[-1, 6, -1, 6, 0, 6], jointaxes=True)   # 动画展示
+    robot.plot(a[5, :], dt=0.1, vellipse=True, loop=False, limits=[-1, 6, -1, 6, 0, 6], jointaxes=True)   # 动画展示
+
+a = input()
 
 plt.close(fig=None)
 
-a = input()
+# Translator
+Translator = rtb.DHRobot([
+    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
+    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
+    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
+], name="Translator")
+
+single_motion = np.linspace(1, 2, num=50)
+reverse_array = single_motion[::-1]
+single_motion = np.hstack((single_motion, reverse_array))
+motionArr = single_motion
+
+for i in range(2):
+    motionArr = np.vstack((motionArr, single_motion))
+
+for i in range(2):
+    Translator.plot(motionArr.T, dt=0.1, vellipse=True, loop=False, limits=[-3, 3, -3, 3, 0, 3], eeframe=True, jointaxes=True)   # 动画展示
+
+plt.close(fig=None)
+
+input()
 
 # Rotator
 coeff = 1
@@ -103,23 +124,23 @@ for i in range(2):
 
 plt.close(fig=None)
 
-a = input()
-
-Translator = rtb.DHRobot([
-    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
-    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
-    PrismaticDH(a=0, alpha=math.pi/2, offset=1*0.5, theta=math.pi/2),
-], name="Translator")
-
-single_motion = np.linspace(1, 2, num=50)
+input()
+# 全体机器人
+single_motion = np.linspace(0, 3, num=10)
 reverse_array = single_motion[::-1]
 single_motion = np.hstack((single_motion, reverse_array))
-motionArr = single_motion
+arm_motion = single_motion*0.3 + 1
+coeffList = [1] + [0.2] * 6 + [1] + [0.2] * 6 + [1] + [0.2] * 6 + [0] + [0.2] * 6
 
+a = arm_motion.copy()
+for i in range(27):
+    if (i % 7) == 6:
+        a = np.vstack((a, arm_motion*coeffList[i+1]))
+    else:
+        a = np.vstack((a, single_motion*coeffList[i+1]))
+# print(single_motion_list)
+a = a.T
 for i in range(2):
-    motionArr = np.vstack((motionArr, single_motion))
-
-for i in range(2):
-    Translator.plot(motionArr.T, dt=0.1, vellipse=True, loop=False, limits=[-3, 3, -3, 3, 0, 3], eeframe=True, jointaxes=True)   # 动画展示
+    robot.plot(a, dt=0.1, vellipse=True, loop=False, limits=[-1, 6, -1, 6, 0, 6], jointaxes=True)   # 动画展示
 
 plt.close(fig=None)
